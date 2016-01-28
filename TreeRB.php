@@ -66,5 +66,63 @@ class TreeRB {
    		return $x;
    	}
 
+
+    /**
+     * Manter o equilíbrio de árvore rubro-negra depois de inserir o nó $x
+     * @param TreeNode $x
+     */
+    private function insertFixup(TreeNode $x) {
+		// Verificar as propriedades do rubro-negro
+		while ($x !== $this->root && $x->parent->color === self::COLOR_RED) {
+			// O balanceamento foi violado
+			if ($x->parent === $x->parent->parent->left_child) {
+                // pai do $x é um filho esquerdo de seu pai
+				$uncle = $x->parent->parent->right_child;
+				if ($uncle->color === self::COLOR_RED) {
+					// Tio é vermelho
+					$x->parent->color = self::COLOR_BLACK;
+					$uncle->color = self::COLOR_BLACK;
+					$x->parent->parent->color = self::COLOR_RED;
+					// Avô agora é nó ativo
+					$x = $x->parent->parent;
+				} else {
+					// Tio e negro
+					if ($x === $x->parent->right_child) {
+						// fazer $x um filho esquerdo
+						$x = $x->parent;
+						$this->rotateLeft($x);
+					}
+					// recoloração e rotação
+					$x->parent->color = self::COLOR_BLACK;
+					$x->parent->parent->color = self::COLOR_RED;
+					$this->rotateRight($x->parent->parent);
+				}
+			} else {
+                // pai de $x é um filho direito de seu pai
+				$uncle = $x->parent->parent->left_child;
+				if ($uncle->color === self::COLOR_RED) {
+					// Tio é VERMELHO
+					$x->parent->color = self::COLOR_BLACK;
+					$uncle->color = self::COLOR_BLACK;
+					$x->parent->parent->color = self::COLOR_RED;
+					// Avô agora é um nó ativo
+					$x = $x->parent->parent;
+				} else {
+					// Tio é NEGRO
+					if ($x === $x->parent->left_child) {
+						$x = $x->parent;
+						$this->rotateRight($x);
+					}
+                    // Recoloração é rotação
+					$x->parent->color = self::COLOR_BLACK;
+					$x->parent->parent->color = self::COLOR_RED;
+					$this->rotateLeft($x->parent->parent);
+				}
+			}
+		}
+        // Definir a cor da raiz para NEGRO
+		$this->root->color = self::COLOR_BLACK;
+	}
+
 }
 ?>
