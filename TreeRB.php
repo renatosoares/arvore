@@ -1,25 +1,25 @@
 <?php
-require 'TreeNode.php';
-require 'ITreeRB.php';
+require 'Node.php';
+
 /**
  *
  */
-class TreeRB implements ITreeRB {
+class TreeRB  {
   const COLOR_BLACK = true;
   const COLOR_RED = false;
   /**
    * Folhas da árvore
-   * @var TreeNode
+   * @var Node
    */
    static $nil;
    /**
     * Raiz da árvore
-    * @var TreeNode
+    * @var Node
     */
    public $root;
 
    public function __construct() {
-     self::$nil = new TreeNode(self::COLOR_BLACK);
+     self::$nil = new Node(self::COLOR_BLACK);
      $this->root = self::$nil;
    }
 
@@ -28,7 +28,7 @@ class TreeRB implements ITreeRB {
    /**
     * Encontrar o nodo de árvore por sua chave
     * @param $key
-    * @return bool|TreeNode
+    * @return bool|Node
     */
    public function findNode($key) {
    $current_node = $this->root;
@@ -54,7 +54,7 @@ class TreeRB implements ITreeRB {
    	/**
    	 * @param $key
    	 * @param $value
-   	 * @return TreeNode
+   	 * @return Node
    	 */
    	public function insertNode($key, $value) {
    		// Encontrar onde o nodo deve ser colocado
@@ -76,7 +76,7 @@ class TreeRB implements ITreeRB {
    		}
 
    		// cria novo node
-   		$x = new TreeNode(self::COLOR_RED, $key, $value, $parent, self::$nil, self::$nil);
+   		$x = new Node(self::COLOR_RED, $key, $value, $parent, self::$nil, self::$nil);
    		// Inserir o node na árvore
    		if (!is_null($parent->key)) {
    			if ($key < $parent->key) {
@@ -98,9 +98,9 @@ class TreeRB implements ITreeRB {
 
     /**
      * Manter o equilíbrio de árvore rubro-negra depois de inserir o nó $x
-     * @param TreeNode $x
+     * @param Node $x
      */
-    private function insertFixup(TreeNode $x) {
+    private function insertFixup(Node $x) {
 		// Verificar as propriedades do rubro-negro
 		while ($x !== $this->root && $x->parent->color === self::COLOR_RED) {
 			// O balanceamento foi violado
@@ -193,7 +193,7 @@ class TreeRB implements ITreeRB {
             $x->parent = $y->parent;
 		}
 		else {
-			$x = new TreeNode(self::COLOR_BLACK, null, null, $y->parent);
+			$x = new Node(self::COLOR_BLACK, null, null, $y->parent);
 		}
 
         if (!is_null($y->parent->key)) {
@@ -220,9 +220,9 @@ class TreeRB implements ITreeRB {
 
     /**
      * Maintain Red-Black tree balance after deleting node $x
-     * @param TreeNode $x
+     * @param Node $x
      */
-    private function deleteFixup(TreeNode $x) {
+    private function deleteFixup(Node $x) {
         while ($x !== $this->root && $x->color === self::COLOR_BLACK) {
             if ($x === $x->parent->left_child) {
 				// $x is a left child of its parent
@@ -291,9 +291,9 @@ class TreeRB implements ITreeRB {
 
     /**
      * Rotate node $x para esquerda
-     * @param TreeNode $x
+     * @param Node $x
      */
-    private function rotateLeft(TreeNode $x) {
+    private function rotateLeft(Node $x) {
 		$y = $x->right_child;
 		// Estabelecer $x->right link
 		$x->right_child = $y->left_child;
@@ -320,9 +320,9 @@ class TreeRB implements ITreeRB {
 
     /**
      * Rotate node x to right
-     * @param TreeNode $x
+     * @param Node $x
      */
-    private function rotateRight(TreeNode $x) {
+    private function rotateRight(Node $x) {
 		$y = $x->left_child;
 		// Estabelecer $x->left link
 		$x->left_child = $y->right_child;
