@@ -1,5 +1,6 @@
 <?php
-interface ITreeRB
+require 'ITree.php';
+interface ITreeRB extends ITree
 {
   /**
    * Encontrar o nodo de árvore por sua chave e mostra-o
@@ -16,7 +17,7 @@ interface ITreeRB
   public function insertNode($key, $value);
 
   /**
-   * Delete node com chave $key 
+   * Delete node com chave $key
    * @param $key
    * @return bool
    */
