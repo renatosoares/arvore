@@ -9,6 +9,7 @@ interface ITree{
   *
   */
   public function isEmpty();
+  public function getRoot();
 
 }
 ?>

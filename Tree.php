@@ -5,11 +5,21 @@
  */
 class Tree implements ITree
 {
-
-  public function __construct(argument)
+  protected $root; // the root node of our tree
+  public function __construct()
   {
-    # code...
+       $this->root = null;
   }
+
+  public function getRoot()
+  {
+      return $this->root;
+  }
+
+ public function isEmpty()
+ {
+     return $this->root === null;
+ }
 }
 
 
