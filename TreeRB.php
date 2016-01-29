@@ -1,8 +1,10 @@
 <?php
+require 'TreeNode.php';
+require 'ITreeRB.php';
 /**
  *
  */
-class TreeRB {
+class TreeRB implements ITreeRB {
   const COLOR_BLACK = true;
   const COLOR_RED = false;
   /**
@@ -21,6 +23,33 @@ class TreeRB {
      $this->root = self::$nil;
    }
 
+// ############# inicio que exibe nodes ###############
+
+   /**
+    * Encontrar o nodo de árvore por sua chave
+    * @param $key
+    * @return bool|TreeNode
+    */
+   public function findNode($key) {
+   $current_node = $this->root;
+
+   while(!is_null($current_node->key)) {
+     if ($key === $current_node->key) {
+       return $current_node;
+     }
+     if ($key < $current_node->key) {
+       $current_node = $current_node->left_child;
+     }
+     else {
+       $current_node = $current_node->right_child;
+     }
+   }
+
+       //echo "Node com a chave $key não encontrado";
+   return false;
+ }
+
+// ############# fim que exibe nodes ###############
 
    	/**
    	 * @param $key
@@ -122,6 +151,201 @@ class TreeRB {
 		}
         // Definir a cor da raiz para NEGRO
 		$this->root->color = self::COLOR_BLACK;
+	}
+
+
+//################### início delete ####################
+
+
+    /**
+     * Delete node com chave $key
+     * @param $key
+     * @return bool
+     */
+    public function deleteNode($key) {
+        // At first find node to delete
+        $node = $this->findNode($key);
+        if (!$node) {
+            return false;
+        }
+
+        if (is_null($node->left_child->key) || is_null($node->right_child->key)) {
+            // $node has a NIL node as a child
+            $y = $node;
+        } else {
+            // Find node with a NIL node as a child
+            $y = $node->right_child;
+            while (!is_null($y->left_child->key)) {
+                $y = $y->left_child;
+            }
+        }
+
+        // $x is $y's only child
+        if (!is_null($y->left_child->key)) {
+            $x = $y->left_child;
+        }
+        else{
+            $x = $y->right_child;
+        }
+
+        // Remove $y from the parent chain
+        if (!is_null($x->key)) {
+            $x->parent = $y->parent;
+		}
+		else {
+			$x = new TreeNode(self::COLOR_BLACK, null, null, $y->parent);
+		}
+
+        if (!is_null($y->parent->key)) {
+            if ($y === $y->parent->left_child) {
+				$y->parent->left_child = $x;
+			}
+			else {
+				$y->parent->right_child = $x;
+			}
+        }
+        else {
+            $this->root = $x;
+        }
+
+        if ($y !== $node) {
+            $node->key = $y->key;
+            $node->value = $y->value;
+        }
+
+        if ($y->color === self::COLOR_BLACK) {
+            $this->deleteFixup($x);
+        }
+    }
+
+    /**
+     * Maintain Red-Black tree balance after deleting node $x
+     * @param TreeNode $x
+     */
+    private function deleteFixup(TreeNode $x) {
+        while ($x !== $this->root && $x->color === self::COLOR_BLACK) {
+            if ($x === $x->parent->left_child) {
+				// $x is a left child of its parent
+                $brother = $x->parent->right_child;
+                if ($brother->color === self::COLOR_RED) {
+					$brother->color = self::COLOR_BLACK;
+                    $x->parent->color = self::COLOR_RED;
+                    $this->rotateLeft($x->parent);
+					$brother = $x->parent->right_child;
+                }
+                if ($brother->left_child->color === self::COLOR_BLACK && $brother->right_child->color === self::COLOR_BLACK) {
+					// Both of the $brother's children are BLACK
+					$brother->color = self::COLOR_RED;
+                    $x = $x->parent;
+                }
+                else {
+                    if ($brother->right_child->color === self::COLOR_BLACK) {
+						// $brother's left child is RED and right child is BLACK
+						$brother->left_child->color = self::COLOR_BLACK;
+						$brother->color = self::COLOR_RED;
+                        $this->rotateRight($brother);
+						$brother = $x->parent->right_child;
+                    }
+					$brother->color = $x->parent->color;
+                    $x->parent->color = self::COLOR_BLACK;
+					$brother->right_child->color = self::COLOR_BLACK;
+                    $this->rotateLeft($x->parent);
+                    $x = $this->root;
+                }
+            }
+            else {
+				// $x is a right child of its parent
+				$brother = $x->parent->left_child;
+                if ($brother->color === self::COLOR_RED) {
+					$brother->color = self::COLOR_BLACK;
+                    $x->parent->color = self::COLOR_RED;
+                    $this->rotateRight($x->parent);
+					$brother = $x->parent->left_child;
+                }
+                if ($brother->right_child->color === self::COLOR_BLACK && $brother->left_child->color === self::COLOR_BLACK) {
+					// Both of the $brother's children are BLACK
+					$brother->color = self::COLOR_RED;
+                    $x = $x->parent;
+                }
+                else {
+                    if ($brother->left_child->color === self::COLOR_BLACK) {
+						// $brother's left child is BLACK and right child is RED
+						$brother->right_child->color = self::COLOR_BLACK;
+						$brother->color = self::COLOR_RED;
+                        $this->rotateLeft($brother);
+						$brother = $x->parent->left_child;
+                    }
+					$brother->color = $x->parent->color;
+                    $x->parent->color = self::COLOR_BLACK;
+					$brother->left_child->color = self::COLOR_BLACK;
+                    $this->rotateRight($x->parent);
+                    $x = $this->root;
+                }
+            }
+        }
+        $x->color = self::COLOR_BLACK;
+    }
+
+
+//################### fim delete ####################
+
+    /**
+     * Rotate node $x para esquerda
+     * @param TreeNode $x
+     */
+    private function rotateLeft(TreeNode $x) {
+		$y = $x->right_child;
+		// Estabelecer $x->right link
+		$x->right_child = $y->left_child;
+		if (!is_null($y->left_child->key)) {
+			$y->left_child->parent = $x;
+		}
+		// Estabelecer $y->parent link
+		$y->parent = $x->parent;
+		if ($x->parent && !is_null($x->parent->key)) {
+			if ($x === $x->parent->left_child) {
+                // $x e sub-arvore esquerda
+				$x->parent->left_child = $y;
+			} else {
+				$x->parent->right_child = $y;
+			}
+		}
+		else {
+			$this->root = $y;
+		}
+		// link $x e $y
+		$y->left_child = $x;
+		$x->parent = $y;
+	}
+
+    /**
+     * Rotate node x to right
+     * @param TreeNode $x
+     */
+    private function rotateRight(TreeNode $x) {
+		$y = $x->left_child;
+		// Estabelecer $x->left link
+		$x->left_child = $y->right_child;
+		if (!is_null($y->right_child->key)) {
+			$y->right_child->parent = $x;
+		}
+		// Estabelecer $y->parent link
+		$y->parent = $x->parent;
+		if ($x->parent && !is_null($x->parent->key)) {
+			if ($x === $x->parent->left_child) {
+                // $x e sub-arvore esquerda
+				$x->parent->left_child = $y;
+			}
+			else {
+				$x->parent->right_child = $y;
+			}
+		}
+		else {
+			$this->root = $y;
+		}
+		// link $x e $y
+		$y->right_child = $x;
+		$x->parent = $y;
 	}
 
 }

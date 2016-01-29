@@ -1,8 +1,8 @@
 <?php
-require 'TreeNode.php';
+
 require 'TreeRB.php';
 
-$tree = new RBTree();
+$tree = new TreeRB();
 
 for ($i = 0; $i < 1000; ++$i) {
 	$key = rand() % 9 + 1;

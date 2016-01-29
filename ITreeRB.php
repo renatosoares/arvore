@@ -1,7 +1,27 @@
 <?php
 interface ITreeRB
 {
+  /**
+   * Encontrar o nodo de árvore por sua chave e mostra-o
+   * @param $key
+   * @return bool|TreeNode
+   */
+  public function findNode($key);
+
+  /**
+   * @param $key
+   * @param $value
+   * @return TreeNode
+   */
   public function insertNode($key, $value);
+
+  /**
+   * Delete node com chave $key 
+   * @param $key
+   * @return bool
+   */
+  public function deleteNode($key);
+
 }
 
 // public interface InterfaceRN {
