@@ -23,7 +23,20 @@ class TreeRB  {
      $this->root = self::$nil;
    }
 
-// ############# inicio que exibe nodes ###############
+// ############# inicio preOrder ###############
+
+public function preOrder($n)
+{
+  if ($n != null) {
+    print("eee");
+    preOrder($n->left_child);
+    preOrder($n->right_child);
+  }
+}
+
+// ############# fim preOrder ###############
+
+// ############# inicio que busca nodes ###############
 
    /**
     * Encontrar o nodo de árvore por sua chave
@@ -49,7 +62,7 @@ class TreeRB  {
    return false;
  }
 
-// ############# fim que exibe nodes ###############
+// ############# fim que busca nodes ###############
 
    	/**
    	 * @param $key

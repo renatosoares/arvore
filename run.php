@@ -5,16 +5,19 @@ require 'TreeRB.php';
 $tree = new TreeRB();
 
 for ($i = 0; $i < 1000; ++$i) {
-	$key = rand() % 9 + 1;
+	$key = rand() % 4 + 1;
 	if ($tree->findNode($key)) {
 		$tree->deleteNode($key);
 	}
 	else {
-		$tree->insertNode($key, null);
+		$tree->insertNode($key, "A");
 	}
 }
-print_r($tree);
+$tree->preOrder($Tree->root);
+//print_r($tree);
+//print_r($tree->root);
 
+print("iiii");
 
 
 ?>
