@@ -20,10 +20,13 @@ for ($i = 0; $i < 1000; ++$i) {
 // foreach ($tree->root as $va1lue) {
 // 	echo $va1lue . "<br>";
 // }
-//print_r($tree);
+print_r($tree);
 //print_r($tree->root);
-
+echo "<br>";
 //print("iiii");
-$tree->preOrder($tree);
+$tree->preOrder($tree->root);
+
+
+
 
 ?>

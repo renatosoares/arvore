@@ -27,13 +27,31 @@ class TreeRB  {
 
 public function preOrder($n)
 {
-  $current_node = $n->root;
-  while (!is_null($current_node->key)) {
-    print("eee <br>");
-    preOrder($current_node->left_child);
-    preOrder($current_node->right_child);
+  $current_node = $n;
+  while (!is_null($current_node->key) {
+    print_r($current_node->key);
+    echo "<br>";
+      echo "<br>";
+        print_r($current_node->left_child->key);
+        echo "<br>";
+        print_r($current_node->right_child->key);
+   preOrder($current_node->left_child);
+
+   preOrder($current_node->right_child);
+
+
   }
 }
+
+// // Print the tree post-order
+// // Traverse left sub-tree, right sub-tree, root
+// void Tree::postOrder(Node* n) {
+//     if ( n ) {
+//        postOrder(n->Left());
+//        postOrder(n->Right());
+//        cout << n->Key() << " ";
+//     }
+// }
 
 // ############# fim preOrder ###############
 
