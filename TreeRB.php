@@ -27,10 +27,11 @@ class TreeRB  {
 
 public function preOrder($n)
 {
-  if ($n != null) {
-    print("eee");
-    preOrder($n->left_child);
-    preOrder($n->right_child);
+  $current_node = $n->root;
+  while (!is_null($current_node->key)) {
+    print("eee <br>");
+    preOrder($current_node->left_child);
+    preOrder($current_node->right_child);
   }
 }
 
