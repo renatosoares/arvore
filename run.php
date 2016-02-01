@@ -11,8 +11,6 @@ for ($i = 0; $i < 1000; ++$i) {
 		$tree->deleteNode($key);
 	}
 	else {
-
-
 		$tree->insertNode($key, $alfa[$key]);
 	}
 }
@@ -22,9 +20,9 @@ for ($i = 0; $i < 1000; ++$i) {
 // }
 print_r($tree);
 //print_r($tree->root);
-echo "<br>";
+
 //print("iiii");
-$tree->preOrder($tree->root);
+//$tree->preOrder($tree->root);
 
 
 

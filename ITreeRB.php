@@ -39,7 +39,7 @@ interface ITreeRB extends ITree
 //
 //     public abstract void preOrdemRN(N�RN no, int n);
 //
-//     public abstract void mostra(N�RN no, int A);
+//     public abstract void mostra(NORN no, int A);
 //
 // }
 ?>

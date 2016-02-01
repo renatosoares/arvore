@@ -23,23 +23,41 @@ class TreeRB  {
      $this->root = self::$nil;
    }
 
+// -------------------------------------------------------
+public function isEmpty()
+{
+  return false;
+}
+public function inOrder($no)
+{
+  $current_node = $no;
+  if (!is_null($current_node->key)) {
+    preOrder($current_node->left_child);
+    print_r($current_node->key);
+    preOrder($current_node->right_child);
+  }
+}
+
+public function isRoot($no)
+{
+  return $no == $this->root();
+}
+public function root()
+{
+  return $this->root;
+}
+
+// -------------------------------------------------------
+
 // ############# inicio preOrder ###############
 
 public function preOrder($n)
 {
   $current_node = $n;
-  while (!is_null($current_node->key) {
+  if (!is_null($current_node->key)) {
     print_r($current_node->key);
-    echo "<br>";
-      echo "<br>";
-        print_r($current_node->left_child->key);
-        echo "<br>";
-        print_r($current_node->right_child->key);
-   preOrder($current_node->left_child);
-
-   preOrder($current_node->right_child);
-
-
+    preOrder($current_node->left_child);
+    preOrder($current_node->right_child);
   }
 }
 
